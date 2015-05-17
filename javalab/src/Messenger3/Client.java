@@ -11,17 +11,16 @@ public class Client {
 	String txt;
 	Color color;
 	public Client(String IP, int port) throws IOException{
-		try {
+//		try {
 			skt = new Socket(IP, port);		//create socket that connects to server
 			input = new BufferedReader(new
 				InputStreamReader(skt.getInputStream()));
 			output = new PrintWriter(skt.getOutputStream(), true);	//creates printwriter for output stream
 			System.out.println("Connection Successful!");
-
-		}
-		catch(Exception e){
-			System.out.println("Connection Failed!");
-		}
+//		}
+//		catch(Exception e){
+//			System.out.println("Connection Failed!");
+//		}
 	}
 	
 	public String read(){

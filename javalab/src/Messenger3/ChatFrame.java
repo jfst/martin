@@ -229,9 +229,14 @@ public class ChatFrame {
 			} else {
 				cl = new Client(serverIP, port);
 				state = CONNECTED;
-				}
+			}
 		}catch(IOException e){
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Unable to connect to server: \"" + serverIP + "\" on port " + port, 
+					"Connection error", JOptionPane.ERROR_MESSAGE);
+//			System.out.println("Unable to connect to server: \"" + serverIP + "\" on port " + port);
+//			Throwable x = e.getCause();
+//			System.out.println(x.getMessage());
+//			e.printStackTrace();
 		}
 		setState();
 
