@@ -50,9 +50,6 @@ public class XMLHandler {
 			Element disconnect = doc.createElement("disconnect");
 			root.appendChild(disconnect);
 		}
-		//Check if there is any XML tags in text
-	//	if(txt.contains("<")) txt.replace("<", "&lt");
-	//	if(txt.contains(">")) txt.replace(">", "&gt");
 		
 		text.appendChild(doc.createTextNode(txt));
 
