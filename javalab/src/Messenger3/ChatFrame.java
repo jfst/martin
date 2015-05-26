@@ -289,6 +289,7 @@ public class ChatFrame {
 			msg = cl.read();
 		}
 		if(msg.length() != 0){
+			System.out.println(msg);
 			String txt = xml.readXML(msg);
 //			if (xml.getSystemMsg().equals("disconnecting")) {
 			if (xml.connectionState()){

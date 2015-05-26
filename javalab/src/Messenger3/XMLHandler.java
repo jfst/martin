@@ -20,6 +20,7 @@ public class XMLHandler {
 	private String color;
 	private String name;
 	private String systemMsg;
+	private boolean connStat = false;
 	
 	public XMLHandler(){
 		docFactory = DocumentBuilderFactory.newInstance();
@@ -38,16 +39,20 @@ public class XMLHandler {
 		Element root = doc.createElement("message");
 		doc.appendChild(root);
 		root.setAttribute("name",name);
-		root.setAttribute("system",systemMsg);
+//		root.setAttribute("system",systemMsg);
 		
 		//Create the children
 		Element text = doc.createElement("text");
 		root.appendChild(text);
 		text.setAttribute("color", c);
-		
+	
+		if(systemMsg == "disconnecting"){
+			Element disconnect = doc.createElement("disconnect");
+			root.appendChild(disconnect);
+		}
 		//Check if there is any XML tags in text
-		if(txt.contains("<")) txt.replace("<", "&lt");
-		if(txt.contains(">")) txt.replace(">", "&gt");
+	//	if(txt.contains("<")) txt.replace("<", "&lt");
+	//	if(txt.contains(">")) txt.replace(">", "&gt");
 		
 		text.appendChild(doc.createTextNode(txt));
 
@@ -80,12 +85,27 @@ public class XMLHandler {
 			if(nNode.getNodeType() == Node.ELEMENT_NODE){
 				Element element = (Element) nNode;
 				name = element.getAttribute("name");
-				systemMsg = element.getAttribute("system");
+//				systemMsg = element.getAttribute("system");
+//				if(systemMsg != ""){
+	//				System.out.println(systemMsg);
+		//		}
 				nList = doc.getElementsByTagName("text");
 				nNode = nList.item(0);
 				element = (Element) nNode;
 				color = element.getAttribute("color");
 				txt = element.getTextContent();
+				nList = doc.getElementsByTagName("disconnect");
+				if(nList.getLength() != 0){
+				//	nNode = nList.item(0);
+//					systemMsg = "disconnecting";
+					connStat = true;
+					String str = name + " har loggat ut";
+					return str;	
+					}
+				else{
+					connStat = false;
+				}
+				
 			}
 
 		} catch (ParserConfigurationException e) {
@@ -107,5 +127,8 @@ public class XMLHandler {
 	}
 	public String getSystemMsg(){
 		return systemMsg;
+	}
+	public boolean connectionState(){
+		return connStat;
 	}
 }
