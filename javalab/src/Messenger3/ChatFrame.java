@@ -247,12 +247,12 @@ public class ChatFrame {
 		setState();
 //		try{
 			if(isServer){
-				String txt = xml.createXML("", color, name, "disconnecting");
+				String txt = xml.createXML("", color, name, true);
 				srv.write(txt);
 				srv.close();
 			} else{
 				// Send system message to server to signal disconnection
-				String txt = xml.createXML("", color, name, "disconnecting");
+				String txt = xml.createXML("", color, name, true);
 				cl.write(txt);
 				cl.close();
 			}
@@ -263,7 +263,7 @@ public class ChatFrame {
 	
 	public void sendMsg(String msg) throws InterruptedException{
 		//String color = "#FF0145";
-		String txt = xml.createXML(msg, color, name, "");
+		String txt = xml.createXML(msg, color, name, false);
 		if(isServer){
 			srv.write(txt);
 		}else{

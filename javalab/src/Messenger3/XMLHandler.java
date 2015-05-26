@@ -19,7 +19,6 @@ public class XMLHandler {
 	private DocumentBuilder docBuilder;
 	private String color;
 	private String name;
-	private String systemMsg;
 	private boolean connStat = false;
 	
 	public XMLHandler(){
@@ -30,7 +29,7 @@ public class XMLHandler {
 			e.printStackTrace();
 		}
 	}
-	public String createXML(String txt, String c, String name, String systemMsg){
+	public String createXML(String txt, String c, String name, boolean disconnect){
 		txt = txt.trim();		// Remove possible end of line
 		
 		Document doc = docBuilder.newDocument();
@@ -46,9 +45,8 @@ public class XMLHandler {
 		root.appendChild(text);
 		text.setAttribute("color", c);
 	
-		if(systemMsg == "disconnecting"){
-			Element disconnect = doc.createElement("disconnect");
-			root.appendChild(disconnect);
+		if(disconnect){
+			root.appendChild(doc.createElement("disconnect"));
 		}
 		
 		text.appendChild(doc.createTextNode(txt));
@@ -121,9 +119,6 @@ public class XMLHandler {
 	}
 	public String getName(){
 		return name;
-	}
-	public String getSystemMsg(){
-		return systemMsg;
 	}
 	public boolean connectionState(){
 		return connStat;
