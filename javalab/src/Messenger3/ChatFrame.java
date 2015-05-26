@@ -10,19 +10,19 @@ import javax.swing.text.*;
 
 public class ChatFrame {
 	//Create the GUI components
-	public static JFrame mainFrame = null;
+	public JFrame mainFrame = null;
 //	public static JTextArea chatText = null;
-	public static JTextPane chatText = null;		//where the text is shown
-	public static JTextArea chatField = null;
+	public JTextPane chatText = null;		//where the text is shown
+	public JTextArea chatField = null;
 	//public static JTextField chatField = null;		//where you write the message you want to send
-	public static JTextField ipField = null;		//where you put the ip adress you want to connect to
-	public static JTextField portField = null;		//where you put the port to connect to
-	public static JTextField nameField = null;		//where you choose the name you want to use
-	public static JRadioButton serverOption = null;	//choose if you want to run as server or client
-	public static JRadioButton clientOption = null;
-	public static JButton connectButton = null;		//for connecting and disconnecting 
-	public static JButton disconnectButton = null;
-	public static JComboBox colorList = null;
+	public JTextField ipField = null;		//where you put the ip adress you want to connect to
+	public JTextField portField = null;		//where you put the port to connect to
+	public JTextField nameField = null;		//where you choose the name you want to use
+	public JRadioButton serverOption = null;	//choose if you want to run as server or client
+	public JRadioButton clientOption = null;
+	public JButton connectButton = null;		//for connecting and disconnecting 
+	public JButton disconnectButton = null;
+	public JComboBox colorList = null;
 	//TCP Components
 	public Server srv = null;
 	public Client cl = null;
@@ -247,12 +247,12 @@ public class ChatFrame {
 		setState();
 //		try{
 			if(isServer){
-				String txt = xml.createXML("", "", "", "disconnecting");
+				String txt = xml.createXML("", color, name, "disconnecting");
 				srv.write(txt);
 				srv.close();
 			} else{
 				// Send system message to server to signal disconnection
-				String txt = xml.createXML("", "", "", "disconnecting");
+				String txt = xml.createXML("", color, name, "disconnecting");
 				cl.write(txt);
 				cl.close();
 			}
@@ -290,12 +290,23 @@ public class ChatFrame {
 		}
 		if(msg.length() != 0){
 			String txt = xml.readXML(msg);
-			if (xml.getSystemMsg().equals("disconnecting")) {
+//			if (xml.getSystemMsg().equals("disconnecting")) {
+			if (xml.connectionState()){
 				if(isServer){
+					try {
+						doc.insertString(doc.getLength(), txt + "\n", style);
+					} catch (BadLocationException e) {
+						e.printStackTrace();
+					}
 					state = SERVER_STARTED;
 					srv.waitForClient(port);
 					state = CONNECTED;
 				} else {
+					try {
+						doc.insertString(doc.getLength(), txt + "\n", style);
+					} catch (BadLocationException e) {
+						e.printStackTrace();
+					}
 					state = DISCONNECTED;
 					cl.close();
 					setState();
