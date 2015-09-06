@@ -27,16 +27,16 @@ public class Player {
          * the best next state. This skeleton returns a random move instead.
          */
         
-        if (pState.isBOG()){
-        	/**
+/*        if (pState.isBOG()){
+        	*//**
         	 * In the beginning of the game it doesn't matter which
         	 * piece we move so therefore we can move any of the pieces
         	 * in the front row
-        	 */
+        	 *//*
             Random random = new Random();
             return lNextStates.elementAt(random.nextInt(lNextStates.size()));
         }
-        /**
+*/        /**
          * If we are able to do a jump then we must do it
          */
 //        for (int i = 0; i < lNextStates.size(); i++){

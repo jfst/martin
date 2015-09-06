@@ -578,10 +578,11 @@ public class GameState {
   public String toString(int pPlayer) {
     // Select preferred printing style by setting cell_text to SIMPLE_TEXT, UNICODE_TEXT or COLOR_TEXT
 
-    final String[] cell_text = Constants.COLOR_TEXT;
+//	    final String[] cell_text = Constants.COLOR_TEXT;
+	    final String[] cell_text = Constants.SIMPLE_TEXT;
 
-    final String board_top = (cell_text == Constants.SIMPLE_TEXT) ? "   -----------------\n" : "    ╭─────────────────╮\n";
-    final String board_bottom = (cell_text == Constants.SIMPLE_TEXT) ? "   -----------------\n" : "    ╰─────────────────╯\n";
+    final String board_top = (cell_text == Constants.SIMPLE_TEXT) ? "     -----------------\n" : "    ╭─────────────────╮\n";
+    final String board_bottom = (cell_text == Constants.SIMPLE_TEXT) ? "     -----------------\n" : "    ╰─────────────────╯\n";
     final String board_left = (cell_text == Constants.SIMPLE_TEXT) ? "| " : "│ ";
     final String board_right = (cell_text == Constants.SIMPLE_TEXT) ? "|" : "│";
 

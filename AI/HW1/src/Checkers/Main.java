@@ -1,5 +1,8 @@
 package Checkers;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Date;
@@ -21,6 +24,8 @@ public class Main {
     boolean init = false;
     boolean verbose = false;
     boolean fast = false;
+    
+    System.err.println(System.getProperty("user.dir"));
 
     for (int i = 0; i < args.length; ++i) {
       String param = args[i];
@@ -45,12 +50,18 @@ public class Main {
       String message = new GameState().toMessage();
       //System.err.println("Sending initial board: '" + message + "'");
       System.out.println(message);
+      BufferedWriter bw = new BufferedWriter(new FileWriter("gameIO.txt"));
+      bw.write(message+"\n");
+      bw.close();
     }
 
     Player player = new Player();
 
     String input_message;
-    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+//    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    BufferedReader br = new BufferedReader(new FileReader("gameIO.txt"));
+    BufferedWriter bw = new BufferedWriter(new FileWriter("gameIO.txt",true));
+
     while ((input_message = br.readLine()) != null) {
       /* Deadline is one second from when we receive the message */
       Deadline deadline = new Deadline(Deadline.getCpuTime() + (fast ? (long) 1e8 : (long) 1e9));
@@ -76,7 +87,7 @@ public class Main {
 
       /* Quit if this is end of game */
       if (input_state.getMove().isEOG()) {
-        break;
+   	    break;
       }
 
       /* Figure out the next move */
@@ -98,11 +109,15 @@ public class Main {
       
       //System.err.println("Sending: '" + output_message + "'");
       System.out.println(output_message);
+      bw.write(output_message+"\n");
+      bw.flush();
 
       /* Quit if this is end of game */
       if (output_state.getMove().isEOG()) {
         break;
       }
     }
+    br.close();
+    bw.close();
   }
 }
