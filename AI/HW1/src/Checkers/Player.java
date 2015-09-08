@@ -83,7 +83,8 @@ public class Player {
     	int row, col, cellNum;
     	for (int i = 0; i < lNextStates.size(); i++){
     		thisState = lNextStates.elementAt(i);
-    		cellNum = thisState.getMove().at(2);	//Gets the position where the piece ended up
+    		Move move = thisState.getMove();
+    		cellNum = thisState.getMove().at(move.length()-1);	//Gets the position where the piece ended up
     		row = GameState.cellToRow(cellNum);
     		col = GameState.cellToCol(cellNum);
     		if (thisState.get(row+1, col-1) != Constants.CELL_INVALID){
