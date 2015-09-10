@@ -137,4 +137,16 @@ public class Player {
         return lNextStates.elementAt(random.nextInt(lNextStates.size()));
 
     }
+    public GameState playRandom(final GameState pState, final Deadline pDue){
+        Vector<GameState> lNextStates = new Vector<GameState>();
+        pState.findPossibleMoves(lNextStates);
+
+        if (lNextStates.size() == 0) {
+            // Must play "pass" move if there are no other moves possible.
+            return new GameState(pState, new Move());
+        }
+    	
+    	Random random = new Random();
+        return lNextStates.elementAt(random.nextInt(lNextStates.size()));
+    }
 }

@@ -91,7 +91,8 @@ public class Main {
       }
 
       /* Figure out the next move */
-      GameState output_state = player.play(input_state, deadline);
+//      GameState output_state = player.play(input_state, deadline);
+      GameState output_state = player.playRandom(input_state, deadline);
 
       /* Crash if deadline has been exceeded */
       if (deadline.timeUntil() < 0) {
