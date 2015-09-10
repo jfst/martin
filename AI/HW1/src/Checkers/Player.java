@@ -80,25 +80,59 @@ public class Player {
          */
     	assert(lNextStates.elementAt(0).getMove().isNormal());
     	GameState thisState;
-    	int row, col, cellNum;
+    	int row, col, cellNum, moveLength;
+    	/**
+    	 * If the next states are empty we know that someone has won
+    	 */
+    	if (lNextStates.isEmpty()){
+    		if (pState.isRedWin()){
+    			System.out.print("Red wins");
+    			return pState;
+    		}
+    		else if (pState.isWhiteWin()){
+    			System.out.print("White wins");
+    			return pState;
+    		}
+    		else{
+    			return null;
+    		}
+    	}
     	for (int i = 0; i < lNextStates.size(); i++){
     		thisState = lNextStates.elementAt(i);
-    		Move move = thisState.getMove();
-    		cellNum = thisState.getMove().at(move.length()-1);	//Gets the position where the piece ended up
+    		moveLength = thisState.getMove().length();
+    		cellNum = thisState.getMove().at(moveLength-1);	//Gets the position where the piece ended up
     		row = GameState.cellToRow(cellNum);
     		col = GameState.cellToCol(cellNum);
-    		if (thisState.get(row+1, col-1) != Constants.CELL_INVALID){
-    			if (thisState.get(row+1, col-1) == Constants.CELL_RED){
-    				//If the cell contains the opponents color the we have to
-    				//check the opposite position
-    				if (thisState.get(row-1, col+1) == Constants.CELL_EMPTY ||
-    					thisState.get(row-1, col+1) == Constants.CELL_WHITE){
-    					//??
+    		if (thisState.get(row+1, col-1) != Constants.CELL_INVALID &&
+    			thisState.get(row+1, col-1) == Constants.CELL_RED){
+    			//If the cell contains the opponents color then we have to
+    			//check the opposite position
+    			if (thisState.get(row-1, col+1) == Constants.CELL_EMPTY ||
+    				thisState.get(row-1, col+1) == Constants.CELL_WHITE){
+    				//Here we have to check if there is any of the 
+    				//opponents pieces to the right
+    				if (thisState.get(row+1, col+1) != Constants.CELL_INVALID &&
+    					thisState.get(row+1, col+1) == Constants.CELL_RED){
+    					//Then we do the same thing as before for this side
+    		 			if (thisState.get(row-1, col-1) == Constants.CELL_EMPTY ||
+    		    			thisState.get(row-1, col-1) == Constants.CELL_WHITE){
+    		 				//Here we know for sure that there is no way for
+    		 				//the opponent to kill the piece we just moved
+    		 				//So for that reason we can execute this move
+    		 				
+    		 				return thisState;
+    		 			}
+    		    					
     				}
     			}
     		}
     	}
 //        pState.getMove()
+    	/**
+    	 * If there is no jumping move available or any move that
+    	 * wont put the piece in danger, then the only thing to do 
+    	 * is to choose between the available moves at random
+    	 */
         Random random = new Random();
         return lNextStates.elementAt(random.nextInt(lNextStates.size()));
 
