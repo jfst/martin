@@ -84,17 +84,14 @@ public class Player {
     	/**
     	 * If the next states are empty we know that someone has won
     	 */
-    	if (lNextStates.isEmpty()){
-    		if (pState.isRedWin()){
+    	if (lNextStates.size() == 1){
+    		if (lNextStates.elementAt(0).getMove().isRedWin()){
     			System.out.print("Red wins");
-    			return pState;
+    			return lNextStates.elementAt(0);
     		}
-    		else if (pState.isWhiteWin()){
+    		else if (lNextStates.elementAt(0).getMove().isWhiteWin()){
     			System.out.print("White wins");
-    			return pState;
-    		}
-    		else{
-    			return null;
+    			return lNextStates.elementAt(0);
     		}
     	}
     	for (int i = 0; i < lNextStates.size(); i++){
