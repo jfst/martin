@@ -11,6 +11,12 @@ public class Player {
      * @param pDue
      *            time before which we must have returned
      * @return the next state the board is in after our move
+     * 
+     * Play strategies.
+     *   Red player:   Move randomly along the board
+     *   White player: 1. Choose jump move with most jumps
+     *                 2. Avoid getting killed in the next move
+     *                 3. Choose random move of the remaining moves
      */
     public GameState play(final GameState pState, final Deadline pDue) {
 
@@ -22,13 +28,20 @@ public class Player {
             return new GameState(pState, new Move());
         }
 
-        /**
-         * Here you should write your algorithms to get the best next move, i.e.
-         * the best next state. This skeleton returns a random move instead.
-         */
-        
-        if (pState.isBOG()){
-        	/**
+    	if (lNextStates.size() == 1){
+        	// If there is only one next state it could be the final state
+    		if (lNextStates.elementAt(0).getMove().isRedWin()){
+    			System.out.print("\nRED WINS!\n\n");
+    			return lNextStates.elementAt(0);
+    		}
+    		else if (lNextStates.elementAt(0).getMove().isWhiteWin()){
+    			System.out.print("\nWHITE WINS\n\n");
+    			return lNextStates.elementAt(0);
+    		}
+    	}
+       
+        if (pState.isBOG() || pState.getNextPlayer()==Constants.CELL_RED){
+        	/*
         	 * In the beginning of the game it doesn't matter which
         	 * piece we move so therefore we can move any of the pieces
         	 * in the front row
@@ -36,7 +49,7 @@ public class Player {
             Random random = new Random();
             return lNextStates.elementAt(random.nextInt(lNextStates.size()));
         }
-        /**
+        /*
          * Here we want to make the best move. We want to eliminate
          * the opponents pieces by jumping over them. If we can do
          * multiple jumps in a single move then that is the best move
@@ -44,21 +57,13 @@ public class Player {
          * us a chance to make another jump.
          */
         if(lNextStates.elementAt(0).getMove().isJump()){
-/*
-        	int[] prioList = new int[lNextStates.size()];
-            for(int i = 0; i < lNextStates.size(); i++){
-            	Vector<GameState> temp = new Vector<GameState>();            	
-            	lNextStates.elementAt(i).findPossibleMoves(temp);
-            	if(temp.elementAt(0).getMove().isJump())
-            		return temp.elementAt(0);
-            	}
-*/			
+		
         	int[] prioList = new int[lNextStates.size()];
         	for(int i = 0; i < lNextStates.size(); i++){
         		prioList[i] = lNextStates.elementAt(i).getMove().length();
         	}
 //        	Arrays.sort(prioList);
-        	/**
+        	/*
         	 * Finds the move with the largest amount of jumps
         	 */
         	int largestJump = prioList[0];
@@ -73,7 +78,7 @@ public class Player {
         }
         	
         
-        /**
+        /*
          * If there is no jump to make we want to make a move that 
          * does not put our piece in danger, i.e. a move that gives 
          * the opponent the chance to jump over the piece the next round
@@ -81,19 +86,6 @@ public class Player {
     	assert(lNextStates.elementAt(0).getMove().isNormal());
     	GameState thisState;
     	int row, col, cellNum, moveLength;
-    	/**
-    	 * If the next states are empty we know that someone has won
-    	 */
-    	if (lNextStates.size() == 1){
-    		if (lNextStates.elementAt(0).getMove().isRedWin()){
-    			System.out.print("Red wins");
-    			return lNextStates.elementAt(0);
-    		}
-    		else if (lNextStates.elementAt(0).getMove().isWhiteWin()){
-    			System.out.print("White wins");
-    			return lNextStates.elementAt(0);
-    		}
-    	}
     	for (int i = 0; i < lNextStates.size(); i++){
     		thisState = lNextStates.elementAt(i);
     		moveLength = thisState.getMove().length();
@@ -125,7 +117,7 @@ public class Player {
     		}
     	}
 //        pState.getMove()
-    	/**
+    	/*
     	 * If there is no jumping move available or any move that
     	 * wont put the piece in danger, then the only thing to do 
     	 * is to choose between the available moves at random
