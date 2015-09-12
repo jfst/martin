@@ -82,7 +82,7 @@ public class Main {
       /* Print the input state */
       if (verbose) {
         System.err.println(input_state.toMessage());
-        System.err.println(input_state.toString());
+        System.err.println(input_state.toString(input_state.getNextPlayer()));
       }
 
       /* Quit if this is end of game */
